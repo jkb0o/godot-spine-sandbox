@@ -2,11 +2,11 @@ Spine Sandbox
 =============
 ![Sandbox](/screenshot.png)
 
-This is simpla application created using awesome [Godot Engine](https://godotengine.org/) for testing animation prepared in [Spine](http://esotericsoftware.com).
+This is simple application created using awesome [Godot Engine](https://godotengine.org/) for testing animation prepared in [Spine](http://esotericsoftware.com).
 
 Get it
 ======
-You can download windows binary or [#build](build) app for any OS.
+You can [download](://firebasestorage.googleapis.com/v0/b/godot-spine-sandbox.appspot.com/o/spine-sandbox.zip?alt=media&token=e3cf218f-602f-4e49-8087-dc3de15e5212) windows binary or [build](#build) app for any OS.
 
 Usage
 =====
@@ -25,7 +25,7 @@ Rules
 
 Build
 =====
-To build sandbox for your OS, you need build Godot with godot-spine-module
+To build sandbox for your OS, you need build Godot with [godot-spine-module](https://github.com/jjay/godot-spine-module)
 [Configure](http://docs.godotengine.org/en/stable/reference/_compiling.html) enviroment for building godot
 ```bash
 git clone git@github.com:jjay/godot-spine-sandbox.git
