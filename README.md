@@ -25,11 +25,11 @@ Rules
 
 Build
 =====
-To build sandbox for your OS, you need build Godot with [godot-spine-module](https://github.com/jjay/godot-spine-module).
+To build sandbox for your OS, you need build Godot 2.1 with [godot-spine-module](https://github.com/jjay/godot-spine-module).
 You also need to [configure](http://docs.godotengine.org/en/stable/reference/_compiling.html) enviroment for building godot.
 ```bash
 git clone git@github.com:jjay/godot-spine-sandbox.git
-git clone git@github.com:godotengine/godot.git
+git clone -b 2.1 git@github.com:godotengine/godot.git
 cd godot
 git submodule add git@github.com:jjay/godot-spine-module modules/spine
 scons platform=osx|linux|windows
