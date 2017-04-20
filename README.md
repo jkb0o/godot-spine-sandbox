@@ -20,7 +20,7 @@ Usage
 Rules
 =====
 * Sandbox support only text based json animations exported from Spine.
-* Sandbox awaits .json, .atlas and .png files with same name at sime location.
+* Sandbox awaits .json, .atlas and .png files with same name at same location.
 * Sandbox awaits valid .png file name inside .atlas file
 
 Build
