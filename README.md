@@ -6,7 +6,7 @@ This is simple application created using awesome [Godot Engine](https://godoteng
 
 Get it
 ======
-You can [download](://firebasestorage.googleapis.com/v0/b/godot-spine-sandbox.appspot.com/o/spine-sandbox.zip?alt=media&token=e3cf218f-602f-4e49-8087-dc3de15e5212) windows binary or [build](#build) app for any OS.
+You can [download](https://firebasestorage.googleapis.com/v0/b/godot-spine-sandbox.appspot.com/o/spine-sandbox.zip?alt=media&token=e3cf218f-602f-4e49-8087-dc3de15e5212) windows binary or [build](#build) app for any OS.
 
 Usage
 =====
