@@ -1,0 +1,38 @@
+[gd_scene format=1]
+
+[node name="alert" type="AcceptDialog"]
+
+rect/min_size = Vector2( 500, 300 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 535.0
+margin/bottom = 276.0
+popup/exclusive = false
+window/title = "Alert!"
+dialog/hide_on_ok = true
+
+[node name="label" type="Label" parent="."]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 20.0
+margin/top = 20.0
+margin/right = 20.0
+margin/bottom = 40.0
+text = "Don't know what to do"
+align = 1
+valign = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+

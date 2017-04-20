@@ -9,6 +9,7 @@ onready var content = get_node("content")
 onready var spine = content.get_node("scroll/spine")
 
 var debug_rect
+var alert_dialog
 
 func _ready():
 	open_btn.connect("pressed", self, "open_file")
@@ -16,6 +17,13 @@ func _ready():
 	for debug in ["bones", "region", "mesh"]:
 		box.get_node("opts_debug_" + debug).connect("toggled", self, "spine_debug", [debug])
 	get_node("content/scroll").connect("input_event", self, "_input")
+	alert_dialog = preload("alert.tscn").instance()
+	get_node("/root").call_deferred("add_child", alert_dialog)
+
+	
+func alert(text):
+	alert_dialog.get_node("label").set_text(text)
+	alert_dialog.popup_centered()
 	
 func should_blend():
 	return box.get_node("opts_blend").is_pressed()
@@ -37,7 +45,7 @@ func open(path, screen=0):
 	if typeof(path) == TYPE_STRING_ARRAY:
 		path = path[0]
 	if !path.ends_with(".json"):
-		alert("Don't know what to do with " + path)
+		alert("Wow. I can only open .json files, not this one:" + path)
 		return
 	
 	if path.length() < 20:
@@ -58,6 +66,9 @@ func open(path, screen=0):
 
 	print("opening spine file ", path)
 	var res = load("user://res/" + file_name + ".json")
+	if !res:
+		alert("Ups.. Can't open Spine resource =(")
+		return
 	spine.set_resource(res)
 	
 	#spine.set_pos(content.get_size()*0.5 - rect.size*0.5 - rect.pos)
