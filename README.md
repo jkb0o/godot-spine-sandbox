@@ -25,8 +25,8 @@ Rules
 
 Build
 =====
-To build sandbox for your OS, you need build Godot with [godot-spine-module](https://github.com/jjay/godot-spine-module)
-[Configure](http://docs.godotengine.org/en/stable/reference/_compiling.html) enviroment for building godot
+To build sandbox for your OS, you need build Godot with [godot-spine-module](https://github.com/jjay/godot-spine-module).
+You also need to [configure](http://docs.godotengine.org/en/stable/reference/_compiling.html) enviroment for building godot.
 ```bash
 git clone git@github.com:jjay/godot-spine-sandbox.git
 git clone git@github.com:godotengine/godot.git
