@@ -20,14 +20,14 @@ script/script = ExtResource( 1 )
 
 [node name="tools" type="Panel" parent="."]
 
-rect/min_size = Vector2( 350, 0 )
+rect/min_size = Vector2( 400, 0 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 350.0
+margin/right = 400.0
 margin/bottom = 780.0
 
 [node name="box" type="VBoxContainer" parent="tools"]
@@ -36,12 +36,12 @@ anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = false
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 10.0
-margin/top = 10.0
-margin/right = 10.0
-margin/bottom = 10.0
+size_flags/horizontal = 3
+size_flags/vertical = 3
+margin/left = 5.0
+margin/top = 5.0
+margin/right = 5.0
+margin/bottom = 5.0
 alignment = 0
 
 [node name="file_label" type="Label" parent="tools/box"]
@@ -52,7 +52,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 14.0
 text = "Current Spine:"
 percent_visible = 1.0
@@ -67,7 +67,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 18.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 21.0
 
 [node name="file_path" type="LineEdit" parent="tools/box"]
@@ -78,7 +78,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 25.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 49.0
 placeholder/alpha = 0.6
 editable = false
@@ -94,7 +94,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 53.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 73.0
 toggle_mode = false
 enabled_focus_mode = 2
@@ -110,7 +110,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 77.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 91.0
 text = "Options:"
 percent_visible = 1.0
@@ -125,26 +125,8 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 95.0
-margin/right = 330.0
+margin/right = 390.0
 margin/bottom = 98.0
-
-[node name="opts_blend" type="CheckBox" parent="tools/box"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 102.0
-margin/right = 330.0
-margin/bottom = 125.0
-toggle_mode = true
-is_pressed = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Blend transitions"
-flat = false
-align = 0
 
 [node name="opts_debug_bones" type="CheckBox" parent="tools/box"]
 
@@ -153,9 +135,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 129.0
-margin/right = 330.0
-margin/bottom = 152.0
+margin/top = 102.0
+margin/right = 390.0
+margin/bottom = 125.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -170,9 +152,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 156.0
-margin/right = 330.0
-margin/bottom = 179.0
+margin/top = 129.0
+margin/right = 390.0
+margin/bottom = 152.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -187,9 +169,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 183.0
-margin/right = 330.0
-margin/bottom = 206.0
+margin/top = 156.0
+margin/right = 390.0
+margin/bottom = 179.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -205,9 +187,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 210.0
-margin/right = 330.0
-margin/bottom = 220.0
+margin/top = 183.0
+margin/right = 390.0
+margin/bottom = 193.0
 
 [node name="anim_label" type="Label" parent="tools/box"]
 
@@ -216,9 +198,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
-margin/top = 224.0
-margin/right = 330.0
-margin/bottom = 238.0
+margin/top = 197.0
+margin/right = 390.0
+margin/bottom = 211.0
 text = "Animations:"
 percent_visible = 1.0
 lines_skipped = 0
@@ -231,9 +213,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 242.0
-margin/right = 330.0
-margin/bottom = 245.0
+margin/top = 215.0
+margin/right = 390.0
+margin/bottom = 218.0
 
 [node name="anim_buttons" type="ButtonGroup" parent="tools/box"]
 
@@ -242,10 +224,65 @@ focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 249.0
-margin/right = 330.0
-margin/bottom = 249.0
+margin/top = 222.0
+margin/right = 390.0
+margin/bottom = 222.0
 alignment = 0
+
+[node name="blend_label" type="Label" parent="tools/box"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 226.0
+margin/right = 390.0
+margin/bottom = 240.0
+text = "Blends:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="blend_separator" type="HSeparator" parent="tools/box"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 244.0
+margin/right = 390.0
+margin/bottom = 247.0
+
+[node name="blend_box" type="VBoxContainer" parent="tools/box"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 251.0
+margin/right = 390.0
+margin/bottom = 770.0
+alignment = 0
+
+[node name="blend_add" type="Button" parent="tools/box/blend_box"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 390.0
+margin/bottom = 20.0
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add blend"
+flat = false
 
 [node name="content" type="Panel" parent="."]
 
@@ -253,7 +290,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 3
 size_flags/vertical = 2
-margin/left = 354.0
+margin/left = 404.0
 margin/top = 0.0
 margin/right = 1180.0
 margin/bottom = 780.0

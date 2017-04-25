@@ -1,9 +1,16 @@
 extends Control
 
+const BlendType = preload("blend.gd")
+const BlendScene = preload("blend.tscn")
+
+const BLEND_EXT = ".spineblend"
+
 onready var box = get_node("tools/box")
 onready var open_btn = box.get_node("file_open_btn")
 onready var anim_buttons = box.get_node("anim_buttons")
 onready var file_path = box.get_node("file_path")
+onready var blends = box.get_node("blend_box")
+onready var add_blend = blends.get_node("blend_add")
 
 onready var content = get_node("content")
 onready var spine = content.get_node("scroll/spine")
@@ -19,14 +26,12 @@ func _ready():
 	get_node("content/scroll").connect("input_event", self, "_input")
 	alert_dialog = preload("alert.tscn").instance()
 	get_node("/root").call_deferred("add_child", alert_dialog)
+	add_blend.connect("pressed", self, "add_blend")
 
 	
 func alert(text):
 	alert_dialog.get_node("label").set_text(text)
 	alert_dialog.popup_centered()
-	
-func should_blend():
-	return box.get_node("opts_blend").is_pressed()
 		
 func spine_debug(value, prop):
 	spine.set("debug/" + prop, value)
@@ -54,31 +59,21 @@ func open(path, screen=0):
 		file_path.set_text("..." + path.substr(path.length()-20, path.length()))
 	file_path.set_tooltip(path)
 	
-	var dir = Directory.new()
-	dir.make_dir_recursive("user://res")
-	var base_path = path.basename()
-	var file_name = path.get_file().basename()
-	for ext in [".png", ".atlas", ".json"]:
-		dir.copy(base_path + ext, "user://res/" + file_name + ext)
+	if spine.get_resource() != null:
+		clear_blends()
 	
 	spine.set_resource(null)
 	yield(get_tree(), "idle_frame")
 
 	print("opening spine file ", path)
-	var res = load("user://res/" + file_name + ".json")
+	var res = load(path)
 	if !res:
 		alert("Ups.. Can't open Spine resource =(")
 		return
 	spine.set_resource(res)
 	
-	#spine.set_pos(content.get_size()*0.5 - rect.size*0.5 - rect.pos)
-	var pl = spine.get_property_list()
-	var animations
-	for p in pl:
-		if p["name"] == "playback/play":
-			animations = Array(p["hint_string"].split(","))
-			animations.pop_front()
-			
+
+	var animations = get_animations()			
 	spine.play(animations[animations.size()-1])
 	spine.set_scale(Vector2(1,1))
 	yield(get_tree(), "idle_frame")
@@ -95,15 +90,85 @@ func open(path, screen=0):
 		btn.connect("pressed", self, "play", [anim])
 		anim_buttons.add_child(btn)
 		
+	load_blends()
+	
+func load_blends():
+	var spine_path = spine.get_resource().get_path()
+	var blend_path = spine_path.basename() + BLEND_EXT
+	var file = File.new()
+	var blend_config = {}
+	for b in blends.get_children():
+		if b extends BlendType:
+			b.queue_free()
+	add_blend.set_disabled(false)
+	if file.file_exists(blend_path):
+		file.open(blend_path, File.READ)
+		blend_config.parse_json(file.get_as_text())
+		file.close()
+		for blend_arr in blend_config["blends"]:
+			var blend = add_blend()
+			blend.from_array(blend_arr)
+	update_blends()
+
+var save_queued = false
+func queue_save_blends():
+	if save_queued:
+		return
+	save_queued = true
+	get_tree().connect("idle_frame", self, "save_blends", [], CONNECT_DEFERRED|CONNECT_ONESHOT)
+
+func save_blends():
+	var blend_arrs = []
+	for blend in blends.get_children():
+		if blend.is_queued_for_deletion():
+			continue
+		if blend extends BlendType:
+			blend_arrs.append(blend.to_array())
+	var blend_path = spine.get_resource().get_path().basename() + BLEND_EXT
+	var file = File.new()
+	file.open(blend_path, File.WRITE)
+	var save = {"blends": blend_arrs}.to_json()
+	file.store_string(save)
+	file.close()
+	print("Saved ", save)
+	save_queued = false
+	update_blends()
+	
+func clear_blends():
+	var animations = get_animations()
+	for from in animations:
+		for to in animations:
+			spine.mix(from, to, 0)
+func update_blends():
+	clear_blends()
+	for blend in blends.get_children():
+		if !(blend extends BlendType):
+			continue
+		var cfg = blend.to_array()
+		spine.mix(cfg[0], cfg[1], cfg[2])
+
+
+func add_blend():
+	var blend = BlendScene.instance()
+	blends.add_child(blend)
+	blends.move_child(blend, blend.get_index()-1)
+	blend.connect("changed", self, "queue_save_blends")
+	blend.connect("removed", self, "queue_save_blends")
+	return blend
+
+		
+func get_animations():
+	var animations
+	var pl = spine.get_property_list()
+	for p in pl:
+		if p["name"] == "playback/play":
+			animations = Array(p["hint_string"].split(","))
+			animations.pop_front()
+	return animations
+
+		
 func play(anim):
 	spine.set_active(true)
-	var current = spine.get_current_animation(0)
-	if should_blend():
-		if current:
-			spine.mix(current, anim, 0.5)
-	else:
-		if current:
-			spine.mix(current, anim, 0)
 	spine.play(anim, 1, true)
 	
 func _exit_tree():
