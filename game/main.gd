@@ -5,9 +5,16 @@ const BlendScene = preload("blend.tscn")
 
 const BLEND_EXT = ".spineblend"
 
-onready var box = get_node("tools/box")
+onready var box = get_node("tools/scroll/box")
 onready var open_btn = box.get_node("file_open_btn")
+onready var opt_box = box.get_node("misc/options")
+onready var info_box = box.get_node("misc/info")
+onready var size_info = info_box.get_node("info_size")
+onready var animation_info = info_box.get_node("info_animation")
+onready var size_factor_info = info_box.get_node("info_size_factor")
+onready var load_info = info_box.get_node("info_load")
 onready var anim_buttons = box.get_node("anim_buttons")
+onready var skin_buttons = box.get_node("skin_buttons")
 onready var file_path = box.get_node("file_path")
 onready var blends = box.get_node("blend_box")
 onready var add_blend = blends.get_node("blend_add")
@@ -19,10 +26,17 @@ var debug_rect
 var alert_dialog
 
 func _ready():
+	set_process(true)
+	var ut = OS.get_unix_time() + OS.get_ticks_msec()
+	var fut1 = ut+2
+	var fut = ut+1000
+	var test = 1499160304+0.1
+	var test2 = 1160304.1
+	print(1260304.1, " ", 12360304.1, " ", 123460304.1, " ", 1234560304.1)
 	open_btn.connect("pressed", self, "open_file")
 	get_tree().connect("files_dropped", self, "open")
 	for debug in ["bones", "region", "mesh"]:
-		box.get_node("opts_debug_" + debug).connect("toggled", self, "spine_debug", [debug])
+		opt_box.get_node("opts_debug_" + debug).connect("toggled", self, "spine_debug", [debug])
 	get_node("content/scroll").connect("input_event", self, "_input")
 	alert_dialog = preload("alert.tscn").instance()
 	get_node("/root").call_deferred("add_child", alert_dialog)
@@ -49,8 +63,8 @@ func open_file():
 func open(path, screen=0):
 	if typeof(path) == TYPE_STRING_ARRAY:
 		path = path[0]
-	if !path.ends_with(".json"):
-		alert("Wow. I can only open .json files, not this one:" + path)
+	if !["json", "skel"].has(path.extension()):
+		alert("Wow. I can only open .json or .skel files, not this one:" + path)
 		return
 	
 	if path.length() < 20:
@@ -66,11 +80,23 @@ func open(path, screen=0):
 	yield(get_tree(), "idle_frame")
 
 	print("opening spine file ", path)
+	var start = OS.get_ticks_msec()
 	var res = load(path)
+	
 	if !res:
 		alert("Ups.. Can't open Spine resource =(")
 		return
 	spine.set_resource(res)
+	load_info.set_value(OS.get_ticks_msec()-start)
+	
+	var skins = get_skins()
+	for btn in skin_buttons.get_children():
+		btn.queue_free()
+	for skin in skins:
+		var btn = Button.new()
+		btn.set_text(skin)
+		btn.connect("pressed", self, "set_skin", [skin])
+		skin_buttons.add_child(btn)
 	
 
 	var animations = get_animations()			
@@ -78,9 +104,11 @@ func open(path, screen=0):
 	spine.set_scale(Vector2(1,1))
 	yield(get_tree(), "idle_frame")
 	yield(get_tree(), "idle_frame")
+	
 			
 	spine.set_pos(content.get_size()*Vector2(0.5, 0.75))
 	print("animations: ", animations)
+	var duration = 0
 	
 	for btn in anim_buttons.get_children():
 		btn.queue_free()
@@ -89,7 +117,15 @@ func open(path, screen=0):
 		btn.set_text(anim)
 		btn.connect("pressed", self, "play", [anim])
 		anim_buttons.add_child(btn)
+		duration += spine.get_animation_length(anim)
 		
+	var f = File.new()
+	f.open(res.get_path(), File.READ)
+	var size = f.get_len()/1024.0
+	f.close()
+	size_info.set_value(size)
+	size_factor_info.set_value(size/duration)
+	
 	load_blends()
 	
 func load_blends():
@@ -165,7 +201,25 @@ func get_animations():
 			animations = Array(p["hint_string"].split(","))
 			animations.pop_front()
 	return animations
+	
+func get_skins():
+	var skins
+	var pl = spine.get_property_list()
+	for p in pl:
+		if p["name"] == "playback/skin":
+			skins = Array(p["hint_string"].split(","))
+	return skins
 
+func set_skin(name):
+	var anim = spine.get_current_animation(0)
+	spine.stop()
+	spine.reset()
+	spine.set_active(false)
+	var result = spine.set_skin(name)
+	print("Skin ", name, " setted: ", result)
+	spine.reset()
+	spine.set_active(true)
+	spine.play(anim, 1, true)
 		
 func play(anim):
 	spine.set_active(true)
@@ -212,4 +266,5 @@ func _input(event):
 		if spine.get_scale().x > 0.1:
 			spine.set_scale(spine.get_scale() - Vector2(0.1, 0.1))
 	
-	
+func _process(delta):
+	animation_info.set_value(spine.get_debug_animate_ticks_msec())
